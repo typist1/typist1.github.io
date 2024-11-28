@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<div class="content">
+
+<head>
+    <title>Calculate</title>
+</head>
+
+<body>
+
+    <div class ="navbar">
+        <a href="#theorems">Theorems</a>
+        <a href="#visualize">Visualize</a>
+        <a href="#bitcoin">Bitcoin Price Predictor</a>
+        <a href="#about">About</a>
+    </div>
+
+    <header>
+        <nav>
+            <div class="background">
+                <div class="overlay">
+                    <h1 style="font-family:Impact, sans-serif;" >Probability of Safety Violation in Bitcoin</h1>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+    <style>
+
+        .background {
+            background-image: url('bitcoin.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+
+        .overlay {
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,body {
+            background: whitesmoke;
+            margin: 0;
+        }
+
+        header {
+            margin: none;
+            font-size:50px;
+            padding: 10px;
+            /*background:#3333ff;*/
+            margin-top:60px;
+            }
+
+            body header nav h1 {
+            background: none;
+            color: white;
+            font-size: 100%;
+            text-align: center;
+            margin: none;
+            min-width: 500px;
+            max-width: 2000px;
+            }
+
+        header nav ul li {
+            font-size: 30px;
+            display:inline-block;
+            text-align: left;
+            padding: 2%;
+            margin: none;
+            text-decoration: none;
+            }
+
+        .content {
+            max-width: 2000px;
+            min-width: 500px;
+            margin: auto;
+            padding: 1%;;
+        }
+
+        #date {
+            font-size: 120%;
+            font-weight: bold
+        }
+
+        #search {
+            margin: 15px;
+            border: none;
+            background: none;
+            outline: none;
+            text-align:justify;
+            }
+
+        #first-article {
+            max-width: 30%;
+            margin: 5%;
+            list-style-type: none;
+            border-bottom: 2px solid #3333ff;
+        }
+
+        #T1Max, #T1Min, #T2Max, #T2Min, #Percent {
+            width: 80%;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin-bottom: 25px;
+        }
+        /*
+        #theoremsIntro {
+            width: 80%;
+            background-color: lightcyan;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin-bottom: 25px;
+        }
+        */
+        
+        a {
+            color: #3333ff;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        button {
+            background: none;
+            border: none;
+        }
+
+        button:hover {
+            color:rgb(29, 104, 169);
+        }
+
+        .navbar {
+
+            display: flex;
+            width: 100%;
+            top:0;
+            z-index: 1000;
+            position: fixed;
+            /*overflow:hidden;*/
+            background-color: rgba(51, 51, 51, 0.8);
+            left: 0;
+        }
+
+        .navbar a {
+            flex: 1;
+            font-size: 100%;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        
+
+        .navbar a:hover {
+            background-color: lightslategray;
+        }
+
+        .section {
+            padding:10px 20px;
+        }
+       
+        #t1images {
+            display:flex;
+        }
+
+        #t1images img {
+            flex: 50%;
+        }
+
+        #t2images {
+            display:flex;
+            align-items:center;
+            padding:20px;
+        }
+
+        #t2images img {
+            flex:100%;
+            width:100%;
+        }
+
+        #photo {
+            flex:100%;
+            width: 100%;
+            max-width: 1000px;
+            display:flex;
+            align-items:center;
+            padding-bottom: 50px;
+        }
+
+        .barChartText {
+            margin-left:20px
+        }
+
+        @media (max-width: 768px) {
+            .t2images {
+                flex-direction: column;
+                align-items: flex-start;
+                }
+
+            .barChartText {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+        }
+    </style>
+
+
+    <p id = "date" style="text-align: center;">By: Ray Sun</p>
+
+    <hr>
+    <hr>
+    
+    <p style="padding-left:10px; padding-top:10px; padding-bottom:10px; font-size:20px;line-height:150%;" id="theoremsIntro">
+        The most optimal attack on a blockchain is private-mining where an individual secretly mines blocks and attempts to create a longer private chain than the public chain.
+        If successful, this enables a miner to gain an unfair share of block rewards. The goal of this site is to more easily demonstrate the findings of <a style="font-size:17px" href="https://arxiv.org/pdf/2203.06357.pdf" target="_blank"><i>Bitcoin's Latency-Security Analysis Made Simple</i></a>  with useful tools and visuals.
+    </p>
+
+
+    <div id="theorems" class="section">
+        <br>
+        <br>
+        <h1>Theorems</h1>
+    </div>
+
+    <div id="Percent">
+        <p style="padding-left:10px; padding-top:10px">Get the confirmation depth for a certain probability of safety violation</p>
+        <p style="padding-left:10px">Select theorem:</p>
+        <form style="padding-left:10px">
+            <input type="radio" id="1Max" name="theorem">Theorem 1 Maximum <br>
+            <input type="radio" id="1Min" name="theorem">Theorem 1 Minimum <br>
+            <input type="radio" id="2Max" name="theorem">Theorem 2 Maximum <br>
+            <input type="radio" id="2Min" name="theorem">Theorem 2 Minimum <br>
+        </form>
+        <p style="padding-left:10px; padding-bottom:10px">Honest Percentage: <input type="text" id="honesty"/> (default .9)</p>
+        <p style="padding-left:10px; padding-bottom:10px">Desired probability of safety violation: <input type="text" id="Desired"/></p>
+        <button type="button" id="b0" style="padding-left:10px; padding-bottom:10px" onclick="getForm()">Confirm</button>
+        <p id="PercentInput" style="padding-left:10px; padding-bottom:10px"></p>
+    </div>
+    <div id="T1Max">
+        <p style="padding-left:10px; padding-top:10px">Theorem 1 Maximum</p>
+        <img src="T1Max.png" alt="Theorem 1 Max" style="width:45%">
+        <p style="padding-left:10px; padding-bottom:10px">Confirmation Depth (k): <input type="text" id="T1Max1"/> (usually 6 for Bitcoin or 30 for Ethereum)</p>
+        <p style="padding-left:10px; padding-bottom:10px">Honest Percentage (p): <input type="text" id="Honest1"/></p>
+        
+        <p style="padding-left:10px; padding-bottom:10px">Total Mining Rate: <input type="text" id="a11"/> (default 1/600 blocks per second)</p>
+        <p style="padding-left:10px; padding-bottom:10px">Block Propagation Delay Upper Bound: <input type="text" id="b11"/> (default 10 seconds)</p>
+        
+        <button type="button" id="b1" style="padding-left:10px; padding-bottom:10px">Confirm</button>
+        <p id="T1MaxInput" style="padding-left:10px; padding-bottom:10px"></p>
+    </div>
+    <div id="T1Min">
+        <p style="padding-left:10px; padding-top:10px">Theorem 1 Minimum</p>
+        <img src="T1Min.png" alt="Theorem 1 Min" style="width:30%">
+        <p style="padding-left:10px; padding-bottom:10px">Confirmation Depth (k): <input type="text" id="T1Min1"/> (usually 6 for Bitcoin or 30 for Ethereum)</p>
+        <p style="padding-left:10px; padding-bottom:10px">Honest Percentage (p): <input type="text" id="Honest2"/></p>
+        <button type="button" id="b2" style="padding-left:10px; padding-bottom:10px">Confirm</button>
+        <p id="T1MinInput" style="padding-left:10px; padding-bottom:10px"></p>
+    </div>
+    <div id="T2Max">
+        <p style="padding-left:10px; padding-top:10px">Theorem 2 Maximum</p>
+        <img src="T2Max.png" alt="Theorem 2 Max" style="width:100%">
+        <p style="padding-left:10px; padding-bottom:10px">Confirmation Depth (k): <input type="text" id="T2Max2"/> (usually 6 for Bitcoin or 30 for Ethereum)</p>
+        <p style="padding-left:10px; padding-bottom:10px">Honest Percentage (p): <input type="text" id="Honest3"/></p>
+        
+        <p style="padding-left:10px; padding-bottom:10px">Total Mining Rate: <input type="text" id="a22"/> (default 1/600 blocks per second)</p>
+        <p style="padding-left:10px; padding-bottom:10px">Block Propagation Delay Upper Bound: <input type="text" id="b22"/> (default 10 seconds)</p>
+        
+        <button type="button" id="b3" style="padding-left:10px; padding-bottom:10px">Confirm</button>
+        <p id="T2MaxInput" style="padding-left:10px; padding-bottom:10px"></p>
+    </div>
+    <div id="T2Min">
+        <p style="padding-left:10px; padding-top:10px">Theorem 2 Minimum</p>
+        <img src="T2Min.png" alt="Theorem 2 Min" style="width:100%">
+        <p style="padding-left:10px; padding-bottom:10px">Confirmation Depth (k): <input type="text" id="T2Min2"/> (usually 6 for Bitcoin or 30 for Ethereum)</p>
+        <p style="padding-left:10px; padding-bottom:10px">Honest Percentage (p): <input type="text" id="Honest4"/></p>
+        <button type="button" id="b4" style="padding-left:10px; padding-bottom:10px">Confirm</button>
+        <p id="T2MinInput" style="padding-left:10px; padding-bottom:10px"></p>
+    </div>
+
+    
+    <script>
+        //smooth scrolling
+        document.querySelectorAll('.navbar a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        let T1Min;
+        let Honest2;
+        let T2Max;
+        let Honest3;
+        let T2Min;
+        let Honest4;
+        let T1Max;
+        let Honest1;
+        let a1;
+        let b1;
+        let a2;
+        let b2;
+        let b0;
+        let desired;
+        let honesty;
+        
+        e = 2.71828182845904523536028747135266249775724709369995957496696762772;
+        
+
+        function maxProbability1(p, k, l, d) {
+            a = p * Math.pow(e, (l * d * -1));
+            return (2 + 2 * Math.sqrt(a / (1 - a))) * Math.pow(4 * a * (1 - a), k);
+        }
+
+        function findKmax1(targetProbability, p) {
+            const tolerance = Math.pow(10, -6);
+            const maxIterations = 10000;
+            let low = 0.0;
+            let high = 100.0;
+            let mid, result;
+
+            for (let i = 0; i < maxIterations; i++) {
+                mid = (low + high) / 2;
+                result = maxProbability1(p, mid, 1/600, 10);
+                if(Math.abs(result - targetProbability) < tolerance) {
+                    console.log(mid)
+                    return Math.round(mid);
+                }
+
+                if (result > targetProbability) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+
+            }
+            console.log(mid)
+            return Math.round(mid);
+        }
+
+        function minProbability1(p, k) {
+            return Math.pow(4 * p * (1 - p), k) / Math.sqrt(k);
+        }
+
+        function findKmin1(targetProbability, p) {
+            const tolerance = Math.pow(10, -6);
+            const maxIterations = 10000;
+            let low = 0.0;
+            let high = 100.0;
+            let mid, result;
+
+            for (let i = 0; i < maxIterations; i++) {
+                mid = (low + high) / 2;
+                result = minProbability1(p, mid);
+                if(Math.abs(result - targetProbability) < tolerance) {
+                    console.log(mid)
+                    return Math.round(mid);
+                }
+
+                if (result > targetProbability) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+
+            }
+            console.log(mid)
+            return Math.round(mid);
+        }
+
+        function p1(i, p) {
+            return Math.pow((1 - p) / p, i - 1) * (1 - (1 - p) / p);
+        }
+
+        function p2(j, n, q) {
+            return combinations(n, j) * Math.pow(q, j) * Math.pow((1 - q), (n - j));
+        }
+
+        function factorial(r) {
+            let s = 1;
+            while (r > 1) s *= r--;
+            return s;
+        }
+
+        function combinations(n,r){
+            let s = 1;
+            let i = r;
+            while(i<n) s*=++i;
+            return s/factorial(n-r)
+        }
+
+        function f1(i, p) {
+            return Math.pow((1 - p) / p, i);
+        }
+
+        function f2(j, n, q) {
+            let sum = 0;
+            for (let l = j + 1; l <= n; l++) {
+                sum += p2(l, n, q);
+            }
+            return sum;
+        }
+
+        // Theorem 2
+        function maxProbability2(k, p, l, d) {
+            a = p * Math.pow(e, (l * d * -1))
+            let total = f1(k, a);
+            for (let i = 1; i <= k; i++) {
+                let inner = 0;
+                for (let j = 0; j <= k - i; j++) {
+                    inner += p2(j, 2 * k + 1 - i, 1 - a) * f1(2 * k + 1 - 2 * i - 2 * j, a);
+                }
+                total += p1(i, a) * (f2(k - i, 2 * k + 1 - i, 1 - a) + inner);
+            }
+
+            return total;
+        }
+
+        function findKmax2(targetProbability, p) {
+            const tolerance = Math.pow(10, -6);
+            const maxIterations = 10000;
+            let low = 0.0;
+            let high = 100.0;
+            let mid, result;
+
+            for (let i = 0; i < maxIterations; i++) {
+                mid = (low + high) / 2;
+                result = maxProbability2(mid, p, 1/600, 10);
+                if(Math.abs(result - targetProbability) < tolerance) {
+                    console.log(mid)
+                    return Math.round(mid);
+                }
+
+                if (result > targetProbability) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+
+            }
+            console.log(mid)
+            return Math.round(mid);
+        }
+
+        function minProbability2(k, p) {
+            let total = f1(k, p);
+            for (let i = 1; i <= k; i++) {
+                let inner = 0;
+                for (let j = 0; j <= k - i; j++) {
+                    inner += p2(j, 2 * k + 1 - i, 1 - p) * f1(2 * k + 2 - 2 * i - 2 * j, p);
+                }
+                total += p1(i, p) * (f2(k - i, 2 * k + 1 - i, 1 - p) + inner);
+            }
+
+            return total;
+        }
+
+        function findKmin2(targetProbability, p) {
+            const tolerance = Math.pow(10, -6);
+            const maxIterations = 10000;
+            let low = 0.0;
+            let high = 100.0;
+            let mid, result;
+
+            for (let i = 0; i < maxIterations; i++) {
+                mid = (low + high) / 2;
+                result = minProbability2(mid, p, 1/600, 10);
+                if(Math.abs(result - targetProbability) < tolerance) {
+                    console.log(mid)
+                    return Math.round(mid);
+                }
+
+                if (result > targetProbability) {
+                    low = mid;
+                } else {
+                    high = mid;
+                }
+
+            }
+            console.log(mid)
+            return Math.round(mid);
+        }
+
+        function getForm() {
+            let max1 = document.getElementById("1Max");
+            let min1 = document.getElementById("1Min");
+            let max2 = document.getElementById("2Max");
+            let min2 = document.getElementById("2Min");
+
+            if (max1.checked) {
+                document.getElementById("PercentInput").innerHTML = `Based on a honest percentage of ${honesty * 100}%, total mining rate of 1/600 blocks per second, and 10 second block propagation delay upper bound, a desired probability of safety violation of ${desired} is achieved by a confirmation depth of <strong>${findKmax1(desired, honesty)}</strong>`;
+            } else if (min1.checked) {
+                document.getElementById("PercentInput").innerHTML =  `Based on a honest percentage of ${honesty * 100}%, total mining rate of 1/600 blocks per second, and 10 second block propagation delay upper bound, a desired probability of safety violation of ${desired} is achieved by a confirmation depth of <strong>${findKmin1(desired, honesty)}</strong>`;
+            } else if (max2.checked) {
+                document.getElementById("PercentInput").innerHTML =  `Based on a honest percentage of ${honesty * 100}%, total mining rate of 1/600 blocks per second, and 10 second block propagation delay upper bound, a desired probability of safety violation of ${desired} is achieved by a confirmation depth of <strong>${findKmax2(desired, honesty)}</strong>`;
+            } else {
+                document.getElementById("PercentInput").innerHTML =  `Based on a honest percentage of ${honesty * 100}%, total mining rate of 1/600 blocks per second, and 10 second block propagation delay upper bound, a desired probability of safety violation of ${desired} is achieved by a confirmation depth of <strong>${findKmin2(desired, honesty)}</strong>`;
+            }
+        }
+
+
+        
+        if (honesty == undefined || honesty == 0 || isNaN(honesty)) {
+            honesty = .9
+        }
+
+        document.getElementById("honesty").addEventListener("keyup", function() {
+            if (honesty > 1) {
+                honesty = honesty/100
+            }
+            honesty = document.getElementById("honesty").value
+        })
+
+        document.getElementById("Desired").addEventListener("keyup", function() {
+            desired = document.getElementById("Desired").value
+        })
+
+
+        document.getElementById("a11").addEventListener("keyup", function() {
+            a1 = document.getElementById("a11").value
+        })
+
+        document.getElementById("b11").addEventListener("keyup", function() {
+            b1 = document.getElementById("b11").value
+        })
+
+        document.getElementById("T1Max1").addEventListener("keyup", function() {
+            T1Max = document.getElementById("T1Max1").value
+        })
+        
+        document.getElementById("Honest1").addEventListener("keyup", function() {
+            Honest1 = document.getElementById("Honest1").value
+        })
+        
+        document.getElementById("b1").addEventListener("click", fT1Max);
+        
+        let operator;
+        let index;
+
+        function fT1Max () {
+        if (Honest1 > 1) {
+            Honest1 = Honest1/100
+        }
+
+        if (typeof a1 == 'string') {
+            for (i = 0; i < a1.length; i++) {
+                if (isNaN(a1[i])) {
+                    operator = a1[i]
+                    index = i
+                }
+            }
+
+            if (operator == '-') {
+                a1 = Number(a1.substring(0, index - 1)) - Number(a1.substring(index+1))
+            }
+
+            else if (operator == '+') {
+                a1 = Number(a1.substring(0, index - 1)) + Number(a1.substring(index+1))
+            }
+
+            else if (operator == '*') {
+                a1 = Number(a1.substring(0, index - 1)) * Number(a1.substring(index+1))
+            }
+
+            else {
+                a1 = Number(a1.substring(0, index - 1)) / Number(a1.substring(index+1));
+            } 
+
+        }
+
+        if (a1 == undefined || a1 == 0 || isNaN(a1)) {
+            a1 = 1/600
+        }
+
+        if (b1 == undefined || b1 == 0 || isNaN(b1)) {
+            b1 = 10
+        }
+            
+            document.getElementById("T1MaxInput").innerHTML = "Probability of safety violation: " + maxProbability1(Honest1, T1Max, a1, b1).toExponential();
+        }
+        
+
+
+        document.getElementById("T1Min1").addEventListener("keyup", function() {
+            T1Min = document.getElementById("T1Min1").value
+
+        })
+        
+        document.getElementById("Honest2").addEventListener("keyup", function() {
+            Honest2 = document.getElementById("Honest2").value
+        })
+
+        document.getElementById("b2").addEventListener("click", fT1Min);
+        
+        function fT1Min () {
+            if (Honest2 > 1) {
+            Honest2 = Honest2/100
+        }
+
+            document.getElementById("T1MinInput").innerHTML = "Probability of safet violation: " + minProbability1(Honest2, T1Min).toExponential();
+        }
+
+
+        document.getElementById("a22").addEventListener("keyup", function() {
+            a2 = document.getElementById("a22").value
+        })
+
+        document.getElementById("b22").addEventListener("keyup", function() {
+            b2 = document.getElementById("b22").value
+        })
+
+        document.getElementById("T2Max2").addEventListener("keyup", function() {
+            T2Max2 = document.getElementById("T2Max2").value
+        })
+
+        document.getElementById("Honest3").addEventListener("keyup", function() {
+            Honest3 = document.getElementById("Honest3").value
+        })
+
+        document.getElementById("b3").addEventListener("click", fT2Max);
+        
+        function fT2Max () {
+            if (Honest3 > 1) {
+            Honest3 = Honest3/100
+        }
+
+        if (typeof a2 == 'string') {
+            for (i = 0; i < a2.length; i++) {
+                if (isNaN(a2[i])) {
+                    operator = a2[i]
+                    index = i
+                }
+            }
+
+            if (operator == '-') {
+                a2 = Number(a2.substring(0, index - 1)) - Number(a2.substring(index+1))
+            }
+
+            else if (operator == '+') {
+                a2 = Number(a2.substring(0, index - 1)) + Number(a2.substring(index+1))
+            }
+
+            else if (operator == '*') {
+                a2 = Number(a2.substring(0, index - 1)) * Number(a2.substring(index+1))
+            }
+
+            else {
+                a2 = Number(a2.substring(0, index - 1)) / Number(a2.substring(index+1));
+            } 
+
+        }
+
+        if (a2 == undefined || a2 == 0 || isNaN(a2)) {
+            a2 = 1/600
+        }
+
+        if (b2 == undefined || b2 == 0 || isNaN(b2)) {
+            b2 = 10
+        }
+
+
+            document.getElementById("T2MaxInput").innerHTML = "Probabilitiy of safety violation: " + maxProbability2(T2Max2, Honest3, a2, b2).toExponential();
+        }
+
+
+
+        document.getElementById("T2Min2").addEventListener("keyup", function() {
+            T2Min2 = document.getElementById("T2Min2").value
+        })
+
+        document.getElementById("Honest4").addEventListener("keyup", function() {
+            Honest4 = document.getElementById("Honest4").value
+        })
+
+        document.getElementById("b4").addEventListener("click", fT2Min);
+        
+        function fT2Min () {
+            if (Honest4 > 1) {
+            Honest4 = Honest4/100
+        }
+        
+            document.getElementById("T2MinInput").innerHTML = "Probability of safety violation: " + minProbability2(T2Min2, Honest4).toExponential();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+    <div id="visualize" class="section">
+        <br>
+        <br>
+        <h1 style="text-align:center">Visualize the Theorems</h1>
+    </div>
+    <div id="t1images">
+        <img src="1maxAndMin.png" style="padding-left:10px; height: auto; width:350px; max-width:100%">
+        <img src="2maxAndMin.png" style="padding-left:10px; height: auto; width:350px; max-width:100%">
+
+    </div>
+    <p style="font-size:20; padding-left:10px;line-height:150%;">
+        Using a 90% honest percentage, 1/600 total mining rate, and 10 second block propagation delay upper bound, as the confirmation depth 
+        increases, the probability of safety violaton decreases logarithmically, resulting a neglible probability of an attack. Therefore, waiting for a greater confirmation depth greatly reduces the likelihood of an attack. Also, Theorem 2 more accurately models the probability
+        of safety violation because both its lower and upper bounds are tighter than theorem 1's.
+    </p>
+
+    <div id="t1images">
+        <img src="1percent.png" style="padding-left:10px; height: auto; width:350px; max-width:100%">
+        <img src="2percent.png" style="padding-left:10px; height: auto; width:350px; max-width:100%">
+
+    </div>
+    <p style="font-size:20; padding-left:10px;line-height:150%;">
+        Using a confirmation depth of 6, 1/600 total mining rate, and 10 second block propagation delay upper bound, as the honest percentage increases, 
+        the probability of safety violaton decreases more and more. A network with a 50-60 honest percentage have a tremendous likelihood that many successful attacks can occur so users must use networks with high honest percentages. Again, theorem 2 more accurately models the probability
+        of safety violation because both its lower and upper bounds are tighter than theorem 1's.
+    </p>
+
+    <div id="t2images">
+        <img src="renTheoremBarChart.png" style="padding-left:10px; height: auto; width:500px; max-width:50%">
+
+    <p class='barChartText' style="font-size:20; padding-left:10px; line-height:150%;">
+        Setting a probability of safety violation at 0.01, 1/600 total mining rate, and 10 second block propagation delay upper bound, as the honest percentage increase, 
+        the required confirmation depth to achieve the same probability of safety violation drops dramaticallly from  the 70-80 honest percentage range. Again, a highly honest network is crucial as increases in the honest percentage resulted in a greater half reduction of the required confirmation depth to maintain the same probability of safety violation.
+    </p>
+    </div>
+    
+    
+  
+
+
+    <div id="bitcoin" class="section">
+        <br>
+        <br>
+        <h1 style="text-align:center">Bitcoin Price Predictor</h1>
+        <div id="t2images">
+    
+            <p class='barChartText' style="font-size:20; padding-left:10px; line-height:150%;">
+                This bitcoin price predictor uses a LSTM (long short-term memory) model, a type of recurrent neural network, which excels
+                at capturing long-term patterns. Predicted prices of a certain day were based off the past 30 days of Bitcoin prices, and the model achieved a training loss of less than 0.0004 and a test loss of less than 0.002.
+                While this model is already performing very well, factoring in volatility, overall sentiment, and incorporating technical analysis metrics such as relative strength index (RSI) are a couple avenues that could potentially improve the model. 
+                The entire source code and further information about the project can be found <a href="https://github.com/typist1/Bitcoin-Price-Predictor/tree/master" target="_blank" style="font-size:15px">here</a>.
+            </p>
+            <img src="bitcoinPredictedPrices.png" style="padding-left:10px; height: auto; width:500px; max-width:50%">
+        </div>
+    </div>
+
+    <div id="about" class="section">
+        <br>
+        <br>
+        <h1 style="text-align:center">About</h1>
+        <p style="font-size:20px; line-height:150%; text-align:center">This project was undertaken by Ray Sun under the generous mentorship of professor Ling Ren</p>
+    </div>
+    <div id="photo">
+       <img style="border-radius:0%;overflow:hidden;max-width:60%; width:60%" src="proPhotoCaption.png">
+        <p class='barChartText' style="font-size:20; padding-left:10px; line-height:150%;">
+            Ray Sun is a senior at Adlai E. Stevenson and is passionate about blockchain security, machine learning, and visualizing data. 
+            He also enjoys teaching coding classes at his Fenghua, his local chinese school, and wecodeucate.org to empower the next generation of programmers. 
+            In his free time, you can find him learning about neural networks, working on side projects, and optimizing his code. <i>Email: raymsun1@gmail.com</i>
+        </p>
+    </div>
+
+    <div id="photo">
+        <img style="border-radius:0%;overflow:hidden;max-width:90%; width:90%;" src="lingRenCaption.png">
+        <p class='barChartText' style="font-size:20; padding-left:10px; line-height:150%;">
+            Ling Ren is an assistant professor in the Computer Science Department at the University of Illinois at Urbana-Champaign. Prior to joining the University of Illinois, he received his PhD from MIT and worked as a postdoctoral researcher at VMware Research Group. 
+Ren works on applied cryptography and secure distributed algorithms. He is generally interested in designing algorithms that are both practically efficient and provably secure. As a result, his research has been as theoretical as proving asymptotic bounds, and as practical as taping out a processor. 
+<i>Email: renling@illinois.edu</i>, <a href="https://sites.google.com/view/renling" target="_blank" style="font-size:15px">personal site</a>
+ </p>
+
+    </div>
+  
+
+
+
+</div>
+</body>
+</html>
